@@ -6,8 +6,10 @@ export const getToken = async (userId) => {
       expiresIn: "7d",
     });
     console.log(token);
-    return;
+
+    return token;
   } catch (err) {
     console.log(err);
+    return null;
   }
 };
