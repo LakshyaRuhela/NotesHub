@@ -5,8 +5,11 @@ import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../utils/firebase";
 import axois from "axios";
 import { serverUrl } from "../App";
+import { useDispatch } from "react-redux";
+import { setUserData } from "../redux/userSlice";
 
 function Auth() {
+  const dispatch = useDispatch();
   // function to handle google authentication
   const handleGoogleAuth = async () => {
     try {
@@ -22,7 +25,8 @@ function Auth() {
         { name, email },
         { withCredentials: true },
       );
-      console.log(result.data);
+      // console.log(result.data);
+      dispatch(setUserData(result.data)); // set data to store user slice
     } catch (err) {
       console.log(err);
     }
@@ -37,7 +41,7 @@ function Auth() {
         className="max-w-7xl mx-auto mt-8 rounded-2xl bg-black/80 backdrop-blur-xl border border-white/10 px-8 py-6 shadow-[0_20px_45px_rgba(0,0,0,0.6)] "
       >
         <h1 className="test-2xl font-bold bg-gradient-to-r from-white via-gray-300 to-white bg-clip-text text-transparent ">
-          NotesHub
+          NotesHub <span className="text-gray-400">AI</span>
         </h1>
         <p className="text-sm text-gray-300 mt-1 ">
           AI-Powered exam-oriented notes & Revision
