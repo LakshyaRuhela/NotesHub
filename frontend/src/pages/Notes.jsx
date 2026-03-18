@@ -3,6 +3,8 @@ import { motion } from "motion/react"; // libraary for animation
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import TopicForm from "../components/TopicForm";
+import SideBar from "../components/SideBar.jsx";
+import FinalResult from "../components/FinalResult.jsx";
 
 function Notes() {
   const navigate = useNavigate();
@@ -70,6 +72,16 @@ function Notes() {
         />
       </motion.div>
       {/* Answer div */}
+      {/* If loading happens */}
+      {loading && (
+        <motion.div
+          animate={{ opacity: [0.4, 1, 0.4] }}
+          transition={{ repeat: Infinity, duration: 1.2 }}
+          className="text-center text-black font-medium mb-6"
+        >
+          Generating Exam-focused notes...
+        </motion.div>
+      )}
       {/* If not your result use this */}
       {!result && (
         <motion.div
@@ -78,6 +90,25 @@ function Notes() {
         >
           <span className="text-4xl mb-3">📙</span>
           <p className="text-sm">Generated notes will appear here</p>
+        </motion.div>
+      )}
+
+      {/* result part  */}
+      {result && (
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="flex flex-col lg:grid lg:grid-cols-4 gap-6"
+        >
+          {/* side bar */}
+          <div className="lg:col-span-1">
+            <SideBar result={result} />
+          </div>
+          {/* final result */}
+          <div className="lg:col-span-3 rounded-2xl bg-white p-6 shadow[0_15px_40px_rgba(0,0,0,0.15)] ">
+            <FinalResult result={result} />
+          </div>
         </motion.div>
       )}
     </div>

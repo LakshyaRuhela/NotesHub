@@ -65,7 +65,7 @@ export const generateNotes = async (req, res) => {
       user.notes = [];
     }
     user.notes.push(notes._id); // push notes id to user
-    await user.save();
+    await user.save(); // saver user
 
     return res
       .status(200)
