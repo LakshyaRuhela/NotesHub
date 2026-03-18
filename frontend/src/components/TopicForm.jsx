@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "motion/react"; // libraary for animation
+import { generateNotes } from "../services/api.js";
 
 function TopicForm({ setResult, setLoading, loading, setError }) {
   const [topic, setTopic] = useState("");
@@ -8,6 +9,31 @@ function TopicForm({ setResult, setLoading, loading, setError }) {
   const [revisionMode, setRevisionMode] = useState("");
   const [includeDiagram, setIncludeDiagram] = useState("");
   const [includeChart, setIncludeChart] = useState("");
+
+  // function to handle sub,it
+  const handleSumit = async () => {
+    // if topic not present
+    if (!topic.trim()) {
+      setError("Please Enter Topic");
+    }
+    setError("");
+    setLoading(true);
+    setResult(null);
+    // fetch data from api.js
+    try {
+      // pass data params
+      const result = await generateNotes({
+        topic,
+        classLevel,
+        examType,
+        revisionMode,
+        includeDiagram,
+        includeChart,
+      });
+      setResult(result.data);
+      setLoading(false);
+    } catch (err) {}
+  };
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -58,6 +84,7 @@ function TopicForm({ setResult, setLoading, loading, setError }) {
       </div>
       {/* Generation Button */}
       <motion.button
+        onClick={handleSumit}
         whileHover={!loading ? { scale: 1.02 } : {}}
         whileTap={!loading ? { scale: 0.95 } : {}}
         disabled={loading}

@@ -5,6 +5,7 @@ import authRouter from "./routes/auth.route.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import userRouter from "./routes/user.route.js";
+import notesRouter from "./routes/generate.route.js";
 dotenv.config();
 
 const PORT = process.env.PORT || 5000;
@@ -28,6 +29,7 @@ app.get("/", (req, res) => {
 // routers
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
+app.use("/api/notes", notesRouter);
 
 app.listen(PORT, () => {
   console.log(`server running on port ${PORT}`);
