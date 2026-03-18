@@ -56,7 +56,7 @@ function NavBar() {
             whileTap={{ scale: 0.97 }}
             className="flex items-center gap-1 px-4 py-2 rounded-full border border-white/20 bg-white/10 text-white text-sm shadow-md cursor-pointer "
           >
-            <span>💎</span>
+            <span className="text-xl">💎</span>
             <span>{credits}</span>
             <motion.span
               whileHover={{ scale: 1.2 }}
