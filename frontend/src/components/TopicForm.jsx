@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { motion } from "motion/react"; // libraary for animation
 import { generateNotes } from "../services/api.js";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { updateCredits } from "../redux/userSlice.js";
 
 function TopicForm({ setResult, setLoading, loading, setError }) {
   const [topic, setTopic] = useState("");
@@ -9,6 +12,11 @@ function TopicForm({ setResult, setLoading, loading, setError }) {
   const [revisionMode, setRevisionMode] = useState("");
   const [includeDiagram, setIncludeDiagram] = useState("");
   const [includeChart, setIncludeChart] = useState("");
+  // state for prgress bar
+  const [progress, setProgress] = useState("");
+  const [progressText, setProgressText] = useState("");
+  // dispatch to change in redux
+  const dispatch = useDispatch();
 
   // function to handle sub,it
   const handleSumit = async () => {
@@ -32,8 +40,54 @@ function TopicForm({ setResult, setLoading, loading, setError }) {
       });
       setResult(result.data);
       setLoading(false);
-    } catch (err) {}
+      // empty form data
+      setClassLevel("");
+      setExamType("");
+      setTopic("");
+      setIncludeChart(false);
+      setIncludeDiagram(false);
+      setRevisionMode(false);
+      // to update deducted credits
+      if (typeof result.creditsLeft === "number") {
+        dispatch(updateCredits(result.creditsLeft));
+      }
+    } catch (err) {
+      console.log(err);
+      setError("Failed to fetch notes from server");
+      setLoading(false);
+    }
   };
+
+  // call fro progress bar if loading true
+  useEffect(() => {
+    // if not loading
+    if (!loading) {
+      setProgress(0);
+      setProgressText("");
+      return;
+    }
+    // if loading happpens
+    let value = 0;
+    const interval = setInterval(() => {
+      value += Math.random() * 8;
+      // constions for value of loading state
+      if (value >= 95) {
+        value = 95;
+        setProgressText("Almost Done..");
+      } else if (value > 70) {
+        setProgressText("Finalizing Notes..");
+      } else if (value > 40) {
+        setProgressText("Processing Content..");
+      } else {
+        setProgressText("Generating Notes..");
+      }
+
+      setProgress(Math.floor(value));
+    }, 700);
+
+    // clear interval
+    return () => clearInterval(interval);
+  }, [loading]);
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -92,6 +146,29 @@ function TopicForm({ setResult, setLoading, loading, setError }) {
       >
         {loading ? "Generating Notes..." : "Generate Notes"}
       </motion.button>
+      {loading && (
+        <div className="mt-4 space-y-2">
+          {/* progress bar */}
+          <div className="w-full h-2 rounded-full bg-white/10 overflow-hidden ">
+            <motion.div
+              initial={{ width: 0 }}
+              animate={{ width: `${progress}%` }}
+              transition={{ ease: "easeOut", duration: 0.6 }}
+              className="h-full bg-gradient-to-r from-green-400 via-emerald-400 to-green-500"
+            ></motion.div>
+            {/* below progress bar */}
+            <div className="flex justify-between text-xs text-gray-300 ">
+              <span>{progressText}</span>
+              <span>{progress}%</span>
+            </div>
+            {/* text  */}
+            <p className="text-xs text-gray-400 text-center ">
+              This may take up to 2-5 minutes. Please dont't close or refresh
+              the page.
+            </p>
+          </div>
+        </div>
+      )}
     </motion.div>
   );
 }
