@@ -9,9 +9,9 @@ function TopicForm({ setResult, setLoading, loading, setError }) {
   const [topic, setTopic] = useState("");
   const [classLevel, setClassLevel] = useState("");
   const [examType, setExamType] = useState("");
-  const [revisionMode, setRevisionMode] = useState("");
-  const [includeDiagram, setIncludeDiagram] = useState("");
-  const [includeChart, setIncludeChart] = useState("");
+  const [revisionMode, setRevisionMode] = useState(false);
+  const [includeDiagram, setIncludeDiagram] = useState(false);
+  const [includeChart, setIncludeChart] = useState(false);
   // state for prgress bar
   const [progress, setProgress] = useState("");
   const [progressText, setProgressText] = useState("");
@@ -19,10 +19,11 @@ function TopicForm({ setResult, setLoading, loading, setError }) {
   const dispatch = useDispatch();
 
   // function to handle sub,it
-  const handleSumit = async () => {
+  const handleSubmit = async () => {
     // if topic not present
     if (!topic.trim()) {
       setError("Please Enter Topic");
+      return;
     }
     setError("");
     setLoading(true);
@@ -74,6 +75,7 @@ function TopicForm({ setResult, setLoading, loading, setError }) {
       if (value >= 95) {
         value = 95;
         setProgressText("Almost Done..");
+        clearInterval(interval);
       } else if (value > 70) {
         setProgressText("Finalizing Notes..");
       } else if (value > 40) {
@@ -138,7 +140,7 @@ function TopicForm({ setResult, setLoading, loading, setError }) {
       </div>
       {/* Generation Button */}
       <motion.button
-        onClick={handleSumit}
+        onClick={handleSubmit}
         whileHover={!loading ? { scale: 1.02 } : {}}
         whileTap={!loading ? { scale: 0.95 } : {}}
         disabled={loading}
@@ -148,25 +150,27 @@ function TopicForm({ setResult, setLoading, loading, setError }) {
       </motion.button>
       {loading && (
         <div className="mt-4 space-y-2">
-          {/* progress bar */}
-          <div className="w-full h-2 rounded-full bg-white/10 overflow-hidden ">
+          {/* Progress Bar */}
+          <div className="w-full h-2 rounded-full bg-white/10 overflow-hidden">
             <motion.div
               initial={{ width: 0 }}
               animate={{ width: `${progress}%` }}
               transition={{ ease: "easeOut", duration: 0.6 }}
               className="h-full bg-gradient-to-r from-green-400 via-emerald-400 to-green-500"
-            ></motion.div>
-            {/* below progress bar */}
-            <div className="flex justify-between text-xs text-gray-300 ">
-              <span>{progressText}</span>
-              <span>{progress}%</span>
-            </div>
-            {/* text  */}
-            <p className="text-xs text-gray-400 text-center ">
-              This may take up to 2-5 minutes. Please dont't close or refresh
-              the page.
-            </p>
+            />
           </div>
+
+          {/* Progress Info */}
+          <div className="flex justify-between text-xs text-gray-300">
+            <span>{progressText}</span>
+            <span>{progress}%</span>
+          </div>
+
+          {/* Message */}
+          <p className="text-xs text-gray-400 text-center">
+            This may take up to 2–5 minutes. Please don’t close or refresh the
+            page.
+          </p>
         </div>
       )}
     </motion.div>
