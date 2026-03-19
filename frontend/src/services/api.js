@@ -29,3 +29,31 @@ export const generateNotes = async (payload) => {
     console.log(err);
   }
 };
+
+// Api to download pdf functionalty
+export const downloadPdf = async (result) => {
+  try {
+    const response = await axios.post(
+      serverUrl + "/api/pdf/generate-pdf",
+      { result },
+      {
+        responseType: "blob",
+        withCredentials: true,
+      },
+    );
+    // blob for pdf type data
+    const blob = new Blob([response.data], {
+      type: "application/pdf",
+    });
+
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement("a"); // anchor tag a
+    link.href = url;
+    link.download = "NotesHub-AI.pdf";
+    link.click();
+
+    window.URL.revokeObjectURL(url);
+  } catch (error) {
+    throw new Error("PDF download failed");
+  }
+};
