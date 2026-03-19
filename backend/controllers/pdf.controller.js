@@ -12,13 +12,13 @@ export const pdfDownload = async (req, res) => {
   res.setHeader("Content-Type", "application/pdf");
   res.setHeader(
     "Content-Disposition",
-    'attachment; filename="NotesHub_Ai.pdf"',
+    'attachment; filename="NotesHub_AI.pdf"',
   );
 
   doc.pipe(res);
 
   // Title
-  doc.fontSize(22).text("NotesHub Ai", { align: "center" });
+  doc.fontSize(22).text("NotesHub AI", { align: "center" });
   doc.moveDown();
   doc.fontSize(18).text(`Importance: ${result.importance}`);
   doc.moveDown();

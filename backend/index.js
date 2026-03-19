@@ -27,7 +27,7 @@ app.get("/", (req, res) => {
   res.json({ messgage: "NotesHub backend running" });
 });
 
-// routers
+// routers routes
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 app.use("/api/notes", notesRouter);
