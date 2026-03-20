@@ -25,7 +25,7 @@ app.post(
 // connecting with frontend
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://noteshub-ai-frontend-c06k.onrender.com",
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   }),
