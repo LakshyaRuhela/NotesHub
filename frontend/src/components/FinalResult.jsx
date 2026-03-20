@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ReactMarkdown from "react-markdown"; // import react markdown
 import MermaidSetup from "./MermaidSetup.jsx";
-import RechartSetUp from "./RechartSetup.jsx";
+import RechartSetup from "./RechartSetup.jsx";
 import { downloadPdf } from "../services/api.js";
 
 // React markdown for giving same class to all h1, h2, p, ul ,li
@@ -130,7 +130,7 @@ function FinalResult({ result }) {
         <section>
           {/* section Header */}
           <SectionHeader icon="📈" title="Visual Charts" color="indigo" />
-          <RechartSetUp charts={result.charts} />
+          <RechartSetup charts={result.charts} />
           <p className="mt-3 text-xs text-gray-500 italic">
             ℹ️ If you need this Chart for future reference or revision, you can
             save it by taking a screenshot.

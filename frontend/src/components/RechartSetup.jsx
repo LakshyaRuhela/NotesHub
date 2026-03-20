@@ -13,7 +13,7 @@ import {
   YAxis,
 } from "recharts";
 
-function RechartSetUp({ charts }) {
+function RechartSetup({ charts }) {
   // Check condtions
 
   if (!charts || charts.length === 0) return null;
@@ -87,4 +87,4 @@ function RechartSetUp({ charts }) {
     </div>
   );
 }
-export default RechartSetUp;
+export default RechartSetup;
