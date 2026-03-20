@@ -10,7 +10,8 @@ import Pricing from "./pages/Pricing.jsx";
 import PaymentSuccess from "./pages/PaymentSuccess.jsx";
 import PaymentFailed from "./pages/PaymentFailed.jsx";
 
-export const serverUrl = "http://localhost:8000";
+// export const serverUrl = "http://localhost:8000";
+export const serverUrl = "https://noteshub-ai-backend-ssy5.onrender.com";
 
 function App() {
   const dispatch = useDispatch();
