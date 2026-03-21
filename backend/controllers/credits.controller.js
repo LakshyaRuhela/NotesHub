@@ -29,11 +29,14 @@ export const createCreditsOrder = async (req, res) => {
     }
 
     // session for stripe
+     const clientUrl = (process.env.CLIENT_URL || "").replace(/\/+$/, "");
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       payment_method_types: ["card"],
-      success_url: `${process.env.CLIENT_URL}/payment-success`,
-      cancel_url: `${process.env.CLIENT_URL}/payment-failed`,
+      // success_url: `${process.env.CLIENT_URL}/payment-success`,
+      // cancel_url: `${process.env.CLIENT_URL}/payment-failed`,
+      success_url: `${clientUrl}/payment-success`,
+      cancel_url: `${clientUrl}/payment-failed`,
       line_items: [
         {
           price_data: {
