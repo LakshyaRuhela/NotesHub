@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import Home from "./pages/Home";
 import Auth from "./pages/Auth";
 import { getCurrentUser } from "./services/api.js";
@@ -22,6 +22,16 @@ function App() {
 
   const { userData } = useSelector((state) => state.user);
   // console.log(userData);
+   const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Normalize accidental leading double-slash path from redirect URL like //payment-success
+    if (location.pathname.startsWith("//")) {
+      const normalizedPath = location.pathname.replace(/^\/+/, "/");
+      navigate(`${normalizedPath}${location.search}${location.hash}`, { replace: true });
+    }
+  }, [location, navigate]);
 
   return (
     <>
@@ -56,6 +66,8 @@ function App() {
         <Route path="/payment-success" element={<PaymentSuccess />} />
         {/* Payment failed */}
         <Route path="/payment-failed" element={<PaymentFailed />} />
+           {/* normalize unknown route to home */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>
   );
